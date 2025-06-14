@@ -17,3 +17,5 @@ learning_rate: 0.001
 log_interval: 5
 
 batch_size: 64
+
+save_path: "models"

@@ -16,11 +16,15 @@ if excel_files:
     # Load the dataset
     df = pd.read_excel(excel_file)
     
-    # Save all body attributes to a text file
+    # Use only half of the dataset for faster processing
+    half_size = len(df) // 10
+    df_half = df.head(half_size)
+    
+    # Save half of the body attributes to a text file
     with open('all_creepypasta_bodies.txt', 'w', encoding='utf-8') as f:
-        for i, body in enumerate(df['body'], 1):
+        for i, body in enumerate(df_half['body'], 1):
             f.write(str(body))
     
-    print(f"Saved {len(df)} creepypasta bodies to 'all_creepypasta_bodies.txt'")
+    print(f"Saved {len(df_half)} creepypasta bodies (half of {len(df)}) to 'all_creepypasta_bodies.txt'")
 
 

@@ -1,6 +1,11 @@
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+import torch.nn as nn
+import torch
+import yaml
+from tqdm import tqdm
+
 
 def encode_text(input_file_path):
     # lets load the file
@@ -13,18 +18,24 @@ def encode_text(input_file_path):
         char_to_idx = {ch: i for i, ch in enumerate(chars)}
         idx_to_char = {i: ch for i, ch in enumerate(chars)}
 
-        # Convert text to numerical format  
-        encoded_text = [char_to_idx[c] for c in text]
+        # Convert text to numerical format with progress bar
+        encoded_text = [char_to_idx[c] for c in tqdm(text, desc="Encoding text", unit="char")]
 
         return encoded_text, vocab_size, char_to_idx, idx_to_char
     
 def create_sequences(data, seq_length):
-    X, y = [], []
-    for i in range(len(data) - seq_length):
-        X.append(data[i:i+seq_length]) # creating a text sequence
-        y.append(data[i+seq_length]) # the next character
-
-    return np.array(X), np.array(y)
+    num_sequences = len(data) - seq_length
+    
+    # Pre-allocate numpy arrays for better performance
+    X = np.zeros((num_sequences, seq_length), dtype=np.int32)
+    y = np.zeros(num_sequences, dtype=np.int32)
+    
+    # Use tqdm for a nice progress bar
+    for i in tqdm(range(num_sequences), desc="Creating sequences", unit="seq"):
+        X[i] = data[i:i+seq_length]
+        y[i] = data[i+seq_length]
+    
+    return X, y
 
 def plot_losses(train_losses, val_losses, fname):
     # Create 'plots' directory if it doesn't exist
@@ -61,3 +72,10 @@ def generate_text(model, device, char_idx_map, idx_to_char, max_len=1000, temp=0
             input_tensor = torch.cat((input_tensor[:, 1:], torch.tensor([[predicted_idx]], dtype=torch.long).to(device)), dim=1)
     
     return generated_text
+
+def load_config(file_path):
+
+    with open(file_path, 'r') as file:
+        config = yaml.safe_load(file)
+
+    return config
