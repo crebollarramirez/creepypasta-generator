@@ -2,7 +2,7 @@ model: 'LSTM'
 
 embed_size: 25
 
-hidden_size: 150
+hidden_size: 300
 
 num_layers: 2
 
@@ -10,7 +10,7 @@ epochs: 10
 
 patience: 3
 
-seq_len: 512
+seq_len: 128
 
 learning_rate: 0.001
 

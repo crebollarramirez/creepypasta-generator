@@ -12,10 +12,10 @@ patience: 3
 
 seq_len: 16
 
-learning_rate: 0.002
+learning_rate: 0.001
 
 log_interval: 5
 
-batch_size: 256
+batch_size: 128
 
 save_path: "models"
