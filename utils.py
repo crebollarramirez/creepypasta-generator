@@ -27,16 +27,25 @@ def encode_text(input_file_path):
 
 
 def create_sequences(data, seq_length):
+    # Convert to numpy array first if it's a list
+    if isinstance(data, list):
+        data = np.array(data, dtype=np.int32)
+
     num_sequences = len(data) - seq_length
 
-    # Pre-allocate numpy arrays for better performance
-    X = np.zeros((num_sequences, seq_length), dtype=np.int32)
-    y = np.zeros(num_sequences, dtype=np.int32)
+    if num_sequences <= 0:
+        raise ValueError(f"Data too short for seq_length {seq_length}")
 
-    # Use tqdm for a nice progress bar
-    for i in tqdm(range(num_sequences), desc="Creating sequences", unit="seq"):
-        X[i] = data[i : i + seq_length]
-        y[i] = data[i + seq_length]
+    print(f"Creating {num_sequences:,} sequences of length {seq_length}")
+
+    # Ultra-fast approach using numpy stride tricks
+    from numpy.lib.stride_tricks import sliding_window_view
+
+    # Create sliding windows
+    windows = sliding_window_view(data, window_shape=seq_length + 1)
+
+    X = windows[:num_sequences, :-1].copy()  # All but last character
+    y = windows[:num_sequences, -1].copy()  # Last character
 
     return X, y
 
