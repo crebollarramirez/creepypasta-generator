@@ -17,7 +17,7 @@ if excel_files:
     df = pd.read_excel(excel_file)
     
     # Use only half of the dataset for faster processing
-    half_size = len(df) // 10
+    half_size = len(df)
     df_half = df.head(half_size)
     
     # Save half of the body attributes to a text file
