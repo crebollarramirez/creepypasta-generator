@@ -56,7 +56,7 @@ def plot_losses(train_losses, val_losses, fname):
 # Text generation function
 def generate_text(model, device, char_idx_map, idx_to_char, max_len=1000, temp=0.8):
     model.eval()
-    start_text = "Macbeth\n by William Shakespeare\n Edited by Barbara A. Mowat and Paul Werstine"
+    start_text = "I walked into the "
     input_seq = [char_idx_map[c] for c in start_text]
     input_tensor = torch.tensor(input_seq, dtype=torch.long).unsqueeze(0).to(device)
     

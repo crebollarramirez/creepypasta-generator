@@ -1,3 +1,6 @@
 data
 all_creepypasta_bodies.txt
 __pycache__
+generate.ipynb
+clientenv.yml
+generated_text/
