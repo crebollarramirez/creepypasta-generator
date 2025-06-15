@@ -1,0 +1,3 @@
+Configuration Results:
+==============================
+base_lstm_config: 1.3448
